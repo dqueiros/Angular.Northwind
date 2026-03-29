@@ -1,0 +1,56 @@
+<h1 class="text-3xl font-bold text-gray-800 mb-8">Categorias</h1>
+
+<div class="flex justify-end mb-4">
+  <button 
+    [routerLink]="['/categories', '0']"
+    class="px-4 py-2 bg-blue-600 text-white rounded">
+    Nova Categoria
+  </button>
+</div>
+
+<ul class="space-y-3">
+  <li *ngFor="let c of categories()" class="p-4 bg-gray-100 rounded shadow">
+
+    <div class="text-lg font-semibold">
+      {{ c.categoryName }}
+    </div>
+
+    <div class="text-gray-600">
+      {{ c.description }}
+    </div>
+
+    <img
+      *ngIf="c.picture"
+      [src]="'data:image/png;base64,' + c.picture"
+      class="mt-2 h-20 rounded border" />
+
+      <!-- BOTÕES -->
+    <div class="mt-3 flex gap-2">
+      <button
+        [routerLink]="['/categories/view', c.categoryID]"
+        class="px-3 py-1 bg-blue-500 text-white rounded">
+        Visualizar
+      </button>
+      <button
+        [routerLink]="['/categories', c.categoryID]"
+        class="px-3 py-1 bg-yellow-500 text-white rounded">
+        Editar
+      </button>
+      <button
+        (click)="openDeleteModal(c.categoryID)"
+        class="px-3 py-1 bg-red-600 text-white rounded">
+        Excluir
+      </button>
+    </div>
+
+  </li>
+</ul>
+
+<app-confirm-modal
+  [isOpen]="isModalOpen"
+  [isLoading]="isDeleting"
+  title="Excluir Categoria"
+  message="Tem certeza que deseja excluir esta categoria?"
+  (confirm)="confirmDelete()"
+  (cancel)="closeModal()">
+</app-confirm-modal>
